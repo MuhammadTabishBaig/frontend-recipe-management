@@ -1,0 +1,9 @@
+<!-- rating.component.html -->
+
+<span
+    class="rating"
+    (click)="rate(i)"
+    [ngClass]="{ filled: i < filledRatings }"
+    *ngFor="let rating of ratings; let i = index"
+    >&#9733;</span
+>

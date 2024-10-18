@@ -1,0 +1,34 @@
+/* rating.component.css */
+
+.rating {
+    font-size: 24px;
+    cursor: pointer;
+    display: inline;
+}
+
+.filled {
+    color: gold;
+}
+
+.rating.half-filled {
+    position: relative;
+}
+
+.rating.half-filled::before {
+    content: '\2605';
+    color: gold;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    width: 50%;
+}
+
+.error-message {
+    color: #FF0000;
+    background-color: #FFEFEF;
+    padding: 10px;
+    border: 1px solid #FF0000;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}

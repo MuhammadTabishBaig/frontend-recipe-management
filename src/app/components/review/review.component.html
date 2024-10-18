@@ -1,0 +1,170 @@
+<!-- review.component.html -->
+<div class="error-message" *ngIf="errorMessage">
+    {{ errorMessage }}
+</div>
+
+<div class="container">
+    <a class="link-button" (click)="showAddFormFunction(recipe.recipeId)">Add New Review</a>
+    <h2>Reviews</h2>
+    <div *ngIf="displayedReviewList.length > 0; 
+    else noReviews" class="table-container">
+        <h3>User Name - {{ username }}</h3>
+        <h3>Email ID - {{ email }}</h3>
+        <h3>Recipe Name - {{ recipe.recipeName }}</h3>
+        <h3>Recipe Ingredients - {{ recipe.recipeIngredients }}</h3>
+        <div>
+            <h3>Recipe Image -</h3>
+            <img src="{{ recipe.recipeImageUrl }}" />
+        </div>
+        <table class="activity-table">
+            <thead>
+                <tr>
+                    <th>Rating</th>
+                    <th>Comment</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let review of displayedReviewList">
+                    <td>
+                        {{ review.rating }}
+                        <div>
+                            <span>
+                                <app-rating [rating]="review.rating" 
+                                [isDisabled]="true"></app-rating>
+                            </span>
+                        </div>
+                    </td>
+                    <td>{{ review.comment }}</td>
+                    <td>
+                        <button class="btn" (click)="populateForm(review)"
+                         *ngIf="review.user === getUserId()">
+                            Update
+                        </button>
+                        <button class="btn delete-btn" 
+                        (click)="confirmDelete(review._id)"
+                            *ngIf="review.user === getUserId()">
+                            Delete
+                        </button>
+                        <h4 *ngIf="review.user !== getUserId()">
+                            No Update / Delete Actions Allowed
+                        </h4>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <ng-template #noReviews>
+        <div class="no-activities-container">
+            <p>No reviews available</p>
+        </div>
+    </ng-template>
+    <a class="link-button" href="/getAllRecipes">
+        Go to Recipe List</a>
+    <div *ngIf="showReviewEditForm" 
+    class="update-form-container">
+        <button class="close-button" 
+        (click)="cancelEdit()">X</button>
+        <h2>Update Review</h2>
+        <form class="update-form" 
+        (ngSubmit)="editReview(reviewUpdated._id)">
+            <div>
+                <label for="username">User Name:</label>
+                <input type="text" id="username" 
+                name="username" [(ngModel)]="username" readonly />
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email"
+                 [(ngModel)]="email" readonly />
+            </div>
+            <div>
+                <label for="recipeName">Recipe Name:</label>
+                <input type="text" id="recipeName"
+                 name="recipeName" [(ngModel)]="recipe.recipeName" readonly />
+            </div>
+            <div>
+                <label for="recipeIngredients">Recipe Ingredients:</label>
+                <input type="text" id="recipeIngredients" 
+                name="recipeIngredients" [(ngModel)]="recipe.recipeIngredients"
+                    readonly />
+            </div>
+            <div>
+                <label>Recipe Image:</label>
+                <img src="{{ recipe.recipeImageUrl }}" />
+            </div>
+            <div>
+                <label>Rating:</label>
+                <div>
+                    <span>
+                        <app-rating [rating]="reviewUpdated.rating"
+                         (ratingChanged)="onRatingChanged($event)"></app-rating>
+                    </span>
+                </div>
+            </div>
+            <div>
+                <label for="comment">Comment:</label>
+                <input type="text" id="comment" name="comment"
+                 [(ngModel)]="reviewUpdated.comment" required />
+            </div>
+            <div>
+                <button type="submit">Update Review</button>
+                <button type="button" (click)="cancelEdit()">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="update-form-container"
+     *ngIf="showReviewAddForm && !showReviewEditForm">
+        <button class="close-button"
+         (click)="closeAddForm()">X</button>
+        <h2>Add Review</h2>
+        <form class="update-form" 
+        (ngSubmit)="addReview(recipe.id)">
+            <div>
+                <label for="username">User Name:</label>
+                <input type="text" id="username" 
+                name="username" [(ngModel)]="username" readonly />
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email"
+                 [(ngModel)]="email" readonly />
+            </div>
+            <div>
+                <label for="recipeName">Recipe Name:</label>
+                <input type="text" id="recipeName" 
+                name="recipeName" [(ngModel)]="recipe.recipeName" readonly />
+            </div>
+            <div>
+                <label for="recipeIngredients">Recipe Ingredients:</label>
+                <input type="text" id="recipeIngredients" 
+                name="recipeIngredients" [(ngModel)]="recipe.recipeIngredients"
+                    readonly />
+            </div>
+            <div>
+                <label>Recipe Image:</label>
+                <div><img src="{{ recipe.recipeImageUrl }}" /></div>
+            </div>
+            <div>
+                <label for="rating">Rating:</label>
+                <div>
+                    <span>
+                        <app-rating [rating]="reviewDataAdded.rating"
+                            (ratingChanged)="onRatingChanged($event)"></app-rating>
+                    </span>
+                </div>
+            </div>
+            <div>
+                <label for="comment">Comment:</label>
+                <input type="text" id="comment" name="comment" 
+                [(ngModel)]="reviewDataAdded.comment" required />
+            </div>
+            <div>
+                <button type="submit">Add Review</button>
+                <button type="button" (click)="resetForm()">Clear</button>
+            </div>
+        </form>
+    </div>
+</div>

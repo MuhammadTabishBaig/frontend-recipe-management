@@ -1,0 +1,72 @@
+/* user.component.css */
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9; /* Light background color */
+  }
+  
+  /* Container styling */
+  .container {
+    max-width: 400px; /* Limit the width */
+    margin: 50px auto; /* Center it with some top margin */
+    padding: 20px; /* Add padding */
+    background-color: white; /* White background for the form */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  }
+  
+  /* Heading styling */
+  h2 {
+    text-align: center; /* Center the heading */
+    color: #333; /* Dark gray color */
+    margin-bottom: 20px; /* Spacing below the heading */
+  }
+  
+  /* Form group styling */
+  .form-group {
+    margin-bottom: 15px; /* Spacing between form elements */
+  }
+  
+  /* Label styling */
+  label {
+    display: block; /* Block level for full width */
+    margin-bottom: 5px; /* Spacing below label */
+    font-weight: bold; /* Bold text */
+    color: #555; /* Medium gray color */
+  }
+  
+  /* Input styling */
+  .form-control {
+    width: 100%; /* Full width inputs */
+    padding: 10px; /* Padding inside input */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 4px; /* Slightly rounded corners */
+    box-sizing: border-box; /* Ensure padding is included in width */
+    transition: border-color 0.3s; /* Smooth transition on focus */
+  }
+  
+  /* Input focus effect */
+  .form-control:focus {
+    border-color: #007bff; /* Blue border on focus */
+    outline: none; /* Remove default outline */
+  }
+  
+  /* Button styling */
+  .btn {
+    width: 100%; /* Full width button */
+    padding: 10px; /* Padding inside button */
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition on hover */
+  }
+  
+  /* Button hover effect */
+  .btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  

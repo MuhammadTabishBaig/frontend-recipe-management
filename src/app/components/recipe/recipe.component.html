@@ -1,0 +1,225 @@
+<!-- recipe.component.html -->
+<div class="error-message" *ngIf="errorMessage">
+    {{ errorMessage }}
+</div>
+
+<div class="container">
+    <a class="link-button" (click)="showAddFormFunction()">
+        Add New Recipe</a>
+    <h2>Recipes</h2>
+
+    <!-- Search bar -->
+    <div class="search-bar">
+        <input type="text" [(ngModel)]="searchQuery" 
+        placeholder="Search by name" />
+        <button (click)="applyFilter()" 
+        class="link-button-search">Search</button>
+        <button (click)="clearFilter()" 
+        class="link-button-clear">Clear</button>
+    </div>
+    <!-- <div class="search-bar">
+        <input type="text" [(ngModel)]="searchQueryCategory"
+         placeholder="Search by category" />
+        <button (click)="applyFilter()"
+         class="link-button-search">Search</button>
+        <button (click)="clearFilterCategory()" 
+        class="link-button-clear">
+            Clear
+        </button>
+    </div> -->
+    <div class="search-bar">
+        <input type="text" [(ngModel)]="searchQueryIngredients"
+         placeholder="Search by ingredients" />
+        <button (click)="applyFilter()"
+         class="link-button-search">Search</button>
+        <button (click)="clearFilterIngredient()" 
+        class="link-button-clear">
+            Clear
+        </button>
+    </div>
+    <div *ngIf="displayedRecipeList.length > 0; 
+    else noRecipes" class="table-container">
+        <div class="recipes">
+            <div class="recipe-cards">
+                <div *ngFor="let recipe of displayedRecipeList" 
+                class="recipe-card">
+                    <img src="{{ recipe.recipeImageUrl }}" 
+                    alt="{{ recipe.recipeName }}" />
+                    <div class="card-body">
+                        <h2 class="card-title">{{ recipe.recipeName }}</h2>
+                        <p class="card-text">
+                            Ingredients : {{ recipe.recipeIngredients }}
+                        </p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                            <button class="btn btn-success" 
+                                (click)="getRecipeById(recipe._id)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn" 
+                                    (click)="populateUpdateForm(recipe)" 
+                                    *ngIf="recipe.user === getUserId()">
+                                    <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn delete-btn" 
+                                    (click)="confirmDelete(recipe._id)"
+                                    *ngIf="recipe.user === getUserId()">
+                                    <i class="fas fa-trash-alt"></i>
+                            </button>
+                            <button class="btn btn-warning" 
+                                    (click)="getReviews(recipe)">
+                                    <i class="fas fa-star"></i>
+                            </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #noRecipes>
+        <div class="no-activities-container">
+            <p>No Recipes available</p>
+        </div>
+    </ng-template>
+    <div class="update-form-container" 
+         *ngIf="showAddForm && !showUpdateForm">
+        <button class="close-button" 
+                (click)="closeAddForm()">X</button>
+        <h2>Add Recipe</h2>
+        <form class="update-form" 
+              (ngSubmit)="createRecipe()">
+            <div>
+                <label for="recipeName">Recipe Name:</label>
+                <input type="text" id="recipeName" name="recipeName" 
+                       [(ngModel)]="recipeCreated.recipeName"
+                    required />
+            </div>
+            <div>
+                <label for="recipeSteps">
+                    Recipe Description:
+                </label>
+                <input type="textarea" id="recipeSteps" 
+                       name="recipeSteps"
+                       [(ngModel)]="recipeCreated.recipeSteps" 
+                       required />
+            </div>
+            <div>
+                <label for="recipeIngredients">Recipe Ingredients:</label>
+                <input type="text" 
+                       id="recipeIngredients" 
+                       name="recipeIngredients"
+                       [(ngModel)]="recipeCreated.recipeIngredients" 
+                       required />
+            </div>
+            <div>
+                <label for="recipeTime">Recipe Time(hours):</label>
+                <input type="number" 
+                       id="recipeTime" 
+                       name="recipeTime"
+                        [(ngModel)]="recipeCreated.recipeTime"
+                       required />
+            </div>
+            <div>
+                <label for="recipeImageUrl">Recipe Image Url:</label>
+                <input type="text" 
+                       id="recipeImageUrl" 
+                       name="v"
+                        [(ngModel)]="recipeCreated.recipeImageUrl"
+                       required />
+                <div *ngIf="recipeCreated && recipeCreated.recipeImageUrl">
+                    <img src="{{ recipeCreated.recipeImageUrl }}" />
+                </div>
+            </div>
+            <div>
+                <button type="submit">Add Recipe</button>
+                <button type="button"
+                 (click)="resetForm()">Clear</button>
+            </div>
+        </form>
+    </div>
+
+    <div *ngIf="showUpdateForm" class="update-form-container">
+        <button class="close-button" 
+        (click)="cancelUpdate()">X</button>
+        <h2>Update Recipe</h2>
+        <form class="update-form" 
+        (ngSubmit)="updateRecipe(recipeUpdated._id)">
+            <div>
+                <label for="updateRecipeName">Recipe Name:</label>
+                <input type="text" id="updateRecipeName" 
+                name="updateRecipeName"
+                    [(ngModel)]="recipeUpdated.recipeName" required />
+            </div>
+            <div>
+                <label for="updaterecipeSteps">Recipe Description:</label>
+                <input type="text" id="updaterecipeSteps"
+                 name="updaterecipeSteps"
+                    [(ngModel)]="recipeUpdated.recipeSteps" required />
+            </div>
+            <div>
+                <label for="updateRecipeIngredients">Recipe Ingredients:</label>
+                <input type="text" id="updateRecipeIngredients" 
+                name="updateRecipeIngredients"
+                    [(ngModel)]="recipeUpdated.recipeIngredients" required />
+            </div>
+            <div>
+                <label for="updateRecipeTime">Steps:</label>
+                <input type="number" id="updateRecipeTime" 
+                name="updateRecipeTime"
+                    [(ngModel)]="recipeUpdated.recipeTime" required />
+            </div>
+            <div>
+                <label for="updateRecipeImageUrl">Recipe Image Url:</label>
+                <input type="text" id="updateRecipeImageUrl" 
+                name="updateRecipeImageUrl"
+                    [(ngModel)]="recipeUpdated.recipeImageUrl" required />
+                <div><img src="{{ recipeUpdated.recipeImageUrl }}" /></div>
+            </div>
+            <div>
+                <button type="submit">Update Recipe</button>
+                <button type="button" 
+                (click)="cancelUpdate()">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <div *ngIf="!showUpdateForm && recipeById._id" 
+    class="view-activity-container">
+        <button class="close-button" (click)="closeView()">X</button>
+        <h2>View Recipe</h2>
+        <form class="view-activity-form">
+            <div>
+                <label for="recipeName">Recipe Name:</label>
+                <input type="text" id="recipeName" 
+                name="recipeName" [(ngModel)]="recipeById.recipeName" readonly />
+            </div>
+            <div>
+                <label for="recipeSteps">Recipe Description:</label>
+                <input type="text" id="recipeSteps" name="recipeSteps"
+                    [(ngModel)]="recipeById.recipeSteps" readonly />
+            </div>
+            <div>
+                <label for="recipeIngredients">Recipe Ingredients:</label>
+                <input type="text" id="recipeIngredients" 
+                name="recipeIngredients" [(ngModel)]="recipeById.recipeIngredients"
+                    readonly />
+            </div>
+            <div>
+                <label for="recipeTime">Recipe Time(hours):</label>
+                <input type="number" id="recipeTime" 
+                name="recipeTime" [(ngModel)]="recipeById.recipeTime"
+                    readonly />
+            </div>
+            <div>
+                <label for="recipeImageUrl">Recipe Image:</label>
+                <div><img src="{{ recipeById.recipeImageUrl }}" /></div>
+            </div>
+            <div>
+                <a href="/getAllRecipes" class="link-button"
+                 (click)="closeView()">Get All Recipes</a>
+            </div>
+        </form>
+    </div>
+</div>
