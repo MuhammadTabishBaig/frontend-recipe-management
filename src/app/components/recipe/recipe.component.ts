@@ -20,6 +20,8 @@ export class RecipeComponent implements OnInit {
     isLoggedIn: boolean = false;
     recipeList: any[] = [];
     displayedRecipeList: any[] = [];
+    userList: any[] =[];
+    displayedUserList: any[] =[];
     recipeById: any = {
         recipeName: '',
         recipeSteps: '',
@@ -41,6 +43,7 @@ export class RecipeComponent implements OnInit {
     recipeUpdated: any = {};
     showUpdateForm: boolean = false;
     showAddForm: boolean = false;
+    showUsersList: boolean = false;
     errorMessage: string = '';
     searchQueryCategory: string = '';
     searchQueryIngredients: string = '';
@@ -71,7 +74,7 @@ export class RecipeComponent implements OnInit {
             const token = localStorage.getItem('token');
             if (token) {
                 const tokenPayload = JSON.parse(atob(token.split('.')[1]));
-                console.log(tokenPayload);
+                // console.log(tokenPayload);
                 return tokenPayload.user.id;
             }
         }
@@ -304,4 +307,37 @@ export class RecipeComponent implements OnInit {
         this.searchQueryIngredients = '';
         this.applyFilter();
     }
+
+    getAllUsers(): void {
+        if (typeof localStorage !== 'undefined') {
+            const token = localStorage.getItem('token');
+            console.log(token);
+            if (token) {
+                console.log("inside if");
+                this.recipeService.getAllUsers(token)
+                    .subscribe((userList: any) => {
+                        this.userList = this.userList;
+                        this.displayedUserList = [...this.userList];
+                    });
+            }
+        }
+    }
+
+    shareRecipe(id: string): void {
+        if (typeof localStorage !== 'undefined') {
+            const token = localStorage.getItem('token');
+            if (token) {
+                // this.userService.getAllUsers();
+                this.showUpdateForm = false;
+                this.showAddForm = false;
+                this.showUsersList = false;
+                this.recipeService
+                    .getRecipeById(id, token)
+                    .subscribe((recipeById) => {
+                        this.recipeById = recipeById;
+                    });
+            }
+        }
+    }
+
 }

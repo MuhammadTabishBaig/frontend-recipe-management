@@ -16,7 +16,7 @@ import { RatingComponent } from './components/rating/rating.component';
     styleUrl: './app.component.css',
 })
 export class AppComponent {
-    title = 'Mfsi Recipe Share Assignment';
+    title = 'Mfsi Recipe Management Assignment';
     isLoggedIn: boolean = false;
     constructor(
         private router: Router,

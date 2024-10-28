@@ -46,30 +46,34 @@
                     <img src="{{ recipe.recipeImageUrl }}" 
                     alt="{{ recipe.recipeName }}" />
                     <div class="card-body">
-                        <h2 class="card-title">{{ recipe.recipeName }}</h2>
+                        <h2 class="card-title">{{ recipe.recipeName }}
+                            <button class="btn btn-warning" (click)="getAllUsers()" style="float:right">                                 <!-- <i class="fas fa-share"></i> -->
+                                <i class="fas fa-share-alt"></i>
+                                </button> 
+                        </h2>
                         <p class="card-text">
                             Ingredients : {{ recipe.recipeIngredients }}
                         </p>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">
-                            <button class="btn btn-success" 
-                                (click)="getRecipeById(recipe._id)">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="btn" 
+                                <button class="btn btn-success" 
+                                    (click)="getRecipeById(recipe._id)">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn" 
                                     (click)="populateUpdateForm(recipe)" 
                                     *ngIf="recipe.user === getUserId()">
                                     <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn delete-btn" 
+                                </button>
+                                <button class="btn delete-btn" 
                                     (click)="confirmDelete(recipe._id)"
                                     *ngIf="recipe.user === getUserId()">
                                     <i class="fas fa-trash-alt"></i>
-                            </button>
-                            <button class="btn btn-warning" 
+                                </button>
+                                <button class="btn btn-warning" 
                                     (click)="getReviews(recipe)">
                                     <i class="fas fa-star"></i>
-                            </button>
+                                </button>
                             </li>
                         </ul>
                     </div>
@@ -222,4 +226,28 @@
             </div>
         </form>
     </div>
-</div>
+
+    <!-- share recipes -->
+    <div class="update-form-container" 
+         *ngIf="showUsersList">
+        <button class="close-button" 
+                (click)="closeAddForm()">X</button>
+        <h2>Share recipes</h2>
+        <div *ngIf="displayedUserList.length > 0; 
+            else noRecipes" class="table-container">
+                <div class="recipes">
+                        <div *ngFor="let user of displayedUserList" 
+                        class="recipe-card">
+                            <div class="card-body">
+                                <h2 class="card-title">{{ user.username }}
+                                    <button class="btn btn-warning" (click)="shareRecipe(user._id)" style="float:right">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+<!-- </div> -->
