@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterOutlet } from '@angular/router';
 import { UserService } from './services/user.service';
 import { SharedServiceService } from './services/shared-service.service';
-import { RatingComponent } from './components/rating/rating.component';
+import { RatingComponent } from './pages/rating/rating.component';
 
 @Component({
     selector: 'app-root',
@@ -16,7 +16,7 @@ import { RatingComponent } from './components/rating/rating.component';
     styleUrl: './app.component.css',
 })
 export class AppComponent {
-    title = 'Mfsi Recipe Management Assignment';
+    title = 'COOKBOOK';
     isLoggedIn: boolean = false;
     constructor(
         private router: Router,
